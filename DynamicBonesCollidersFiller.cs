@@ -12,7 +12,7 @@ public class DynamicBonesCollidersFiller : EditorWindow
         //Check If The User Has Even Got A GameObject Selected - Prevents NullReferenceExceptions Due To Such.
         if (Selection.gameObjects.Length == 0)
         {
-            Debug.Log("You Have No GameObjects Selected!");
+            Debug.LogError("You Have No GameObjects Selected!");
             return;
         }
 
@@ -83,7 +83,7 @@ public class DynamicBonesCollidersFiller : EditorWindow
         //If No DynamicBones Were Found And Therefore Effected, Print To Console
         if (DynBonesFound == 0)
         {
-            Debug.Log("No Dynamic Bones Were Found So None Were Effected!");
+            Debug.LogError("No Dynamic Bones Were Found So None Were Effected!");
         }
     }
 
