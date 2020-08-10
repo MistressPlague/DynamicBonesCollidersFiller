@@ -1,13 +1,14 @@
+#if UNITY_EDITOR
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
-public class DynamicBonesCollidersFiller : EditorWindow
+public class DynamicBonesCollidersFiller : UnityEditor.EditorWindow
 {
     //Created By Plague <3
     //Copyright Reserved
     [MenuItem("GameObject/Set DynamicBones To Have All Colliders", false, -10)]
-    static void Set()
+    private static void Set()
     {
         //Check If The User Has Even Got A GameObject Selected - Prevents NullReferenceExceptions Due To Such.
         if (Selection.gameObjects.Length == 0)
@@ -130,3 +131,4 @@ public class DynamicBonesCollidersFiller : EditorWindow
         }
     }
 }
+#endif
