@@ -1,6 +1,6 @@
-using UnityEngine;
-using UnityEditor;
 using System.Collections.Generic;
+using UnityEditor;
+using UnityEngine;
 
 public class DynamicBonesCollidersFiller : EditorWindow
 {
@@ -13,6 +13,7 @@ public class DynamicBonesCollidersFiller : EditorWindow
         if (Selection.gameObjects.Length == 0)
         {
             Debug.LogError("You Have No GameObjects Selected!");
+
             return;
         }
 
@@ -23,19 +24,18 @@ public class DynamicBonesCollidersFiller : EditorWindow
         int DynBonesFound = 0;
 
         //Retrieve The Armature Of The Avatar
-            //Get All The Root GameObjects In The Scene
-        foreach (GameObject obj in UnityEngine.SceneManagement.SceneManager.GetActiveScene().GetRootGameObjects())
+        //Enumerate The First Child GameObject Of Each GameObject
+        for (int i = 0; i < Selection.activeGameObject.transform.root.childCount; i++)
         {
-            //Enumerate The First Child GameObject Of Each GameObject In The Root Of The Scene
-            for (int i = 0; i < obj.transform.childCount; i++)
-            {
-                //Object Reference
-                GameObject obj2 = obj.transform.GetChild(i).gameObject;
+            //Object Reference
+            GameObject obj2 = Selection.activeGameObject.transform.root.GetChild(i).gameObject;
 
-                //Check If Found GameObject Is The Armature
-                if (obj2.name.Contains("Armature"))
-                    //If So, Add It To The Object Reference For Later Use
-                    RootArmature = obj2;
+            //Check If Found GameObject Is The Armature
+            if (obj2.name == "Armature")
+            {
+                //If So, Add It To The Object Reference For Later Use
+                RootArmature = obj2;
+                break;
             }
         }
 
@@ -63,14 +63,18 @@ public class DynamicBonesCollidersFiller : EditorWindow
         {
             //Ignore Empty GameObjects
             if (CurrentGameObject == null)
-				continue;
-			
+            {
+                continue;
+            }
+
             //Enumerate DynamicBones On GameObject
             foreach (DynamicBone DynBone in CurrentGameObject.GetComponents<DynamicBone>())
             {
                 //Ignore Invalid DynamicBone Components In GameObject
-				if (DynBone == null)
-					continue;
+                if (DynBone == null)
+                {
+                    continue;
+                }
 
                 //Raise DynBonesFound By 1
                 DynBonesFound++;
@@ -113,8 +117,10 @@ public class DynamicBonesCollidersFiller : EditorWindow
         {
             //If There Is A DynamicBoneCollider On This Transform
             if (transform.GetComponent<DynamicBoneCollider>())
+            {
                 //Add It To List For Use Later
                 DynamicBoneColliders.Add(transform.GetComponent<DynamicBoneCollider>());
+            }
 
             //Recursive Re-Call
             for (int i = 0; i < transform.childCount; i++)
